@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Muhammad Kamran Tufail — AI Automation Engineer, AI Agent Builder & Workflow Architect based in Islamabad, Pakistan.">
+<meta name="keywords" content="AI Engineer, AI Agents, n8n, LangChain, OpenAI, Python, Next.js, Islamabad">
+<meta property="og:title" content="Muhammad Kamran Tufail — AI Agent Builder">
+<meta property="og:description" content="Building intelligent systems at the intersection of LLMs, automation & software engineering.">
+<meta property="og:type" content="website">
+<title>Muhammad Kamran Tufail — AI Agent Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060b18;--bg2:#0b1225;--bg3:#10182e;--card:#0d1630;
+  --cyan:#00e5ff;--lime:#b8ff3a;--gold:#ffb800;--coral:#ff6b6b;--purple:#a78bfa;
+  --text:#e2e8f8;--muted:#6b7db3;--border:rgba(0,229,255,.13);--border-h:rgba(0,229,255,.42);
+  --ff-d:'Syne',sans-serif;--ff-m:'JetBrains Mono',monospace;
+  --glow:0 0 20px rgba(0,229,255,.18);--glow-h:0 0 32px rgba(0,229,255,.38);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-d);background:var(--bg);color:var(--text);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,229,255,.25);color:#fff}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.028) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+
+/* CURSOR */
+.cur{width:6px;height:6px;background:var(--cyan);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform .08s}
+.cur-ring{width:28px;height:28px;border:1px solid rgba(0,229,255,.6);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .18s,top .18s,width .15s,height .15s;mix-blend-mode:screen}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(6,11,24,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--ff-m);font-size:.84rem;color:var(--cyan);letter-spacing:.08em}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{font-size:.76rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{padding:.38rem 1rem;font-family:var(--ff-m);font-size:.72rem;font-weight:600;letter-spacing:.07em;border-radius:4px;cursor:pointer;transition:all .2s;background:var(--cyan);border:1px solid var(--cyan);color:#060b18}
+.nav-cta:hover{box-shadow:0 0 22px rgba(0,229,255,.5)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 4rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{font-family:var(--ff-m);font-size:.7rem;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.hero-badge::before{content:'';display:inline-block;width:22px;height:1px;background:var(--cyan)}
+h1{font-size:clamp(2.8rem,7vw,5.6rem);font-weight:800;line-height:1.05;letter-spacing:-.025em}
+.n1{display:block;color:var(--text)}
+.n2{display:block;background:linear-gradient(130deg,var(--cyan) 20%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-role{margin-top:1.1rem;font-family:var(--ff-m);font-size:.88rem;color:var(--muted);letter-spacing:.05em}
+.hero-desc{margin-top:.9rem;font-size:1.05rem;line-height:1.72;max-width:560px;opacity:.85}
+.hero-ctas{margin-top:2.2rem;display:flex;gap:1rem;flex-wrap:wrap}
+.btn-p{padding:.75rem 1.9rem;font-weight:700;font-size:.9rem;border-radius:6px;cursor:pointer;transition:all .25s;letter-spacing:.03em}
+.btn-primary{background:var(--cyan);border:2px solid var(--cyan);color:#060b18}
+.btn-primary:hover{box-shadow:0 0 32px rgba(0,229,255,.58);transform:translateY(-2px)}
+.btn-sec{background:transparent;border:2px solid var(--border-h);color:var(--cyan)}
+.btn-sec:hover{background:rgba(0,229,255,.07);transform:translateY(-2px)}
+.hero-stats{margin-top:3rem;display:flex;gap:3rem;flex-wrap:wrap}
+.stat-n{font-family:var(--ff-m);font-size:2.1rem;font-weight:600;color:var(--cyan);line-height:1}
+.stat-l{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem;font-family:var(--ff-m)}
+
+/* SECTION */
+section{max-width:1200px;margin:0 auto;padding:5rem 2rem;position:relative;z-index:1}
+.sec-tag{font-family:var(--ff-m);font-size:.68rem;color:var(--cyan);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.55rem}
+.sec-tag::before{content:'';display:inline-block;width:18px;height:1px;background:var(--cyan)}
+h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.45rem}
+.sec-sub{color:var(--muted);font-size:.92rem;margin-bottom:2.8rem;line-height:1.65}
+
+/* ACHIEVEMENT */
+#achievement{max-width:1200px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1}
+.ach-card{background:linear-gradient(135deg,rgba(255,184,0,.07),rgba(255,184,0,.02));border:1px solid rgba(255,184,0,.42);border-radius:14px;padding:2.5rem;position:relative;overflow:hidden;box-shadow:0 0 50px rgba(255,184,0,.07),inset 0 1px 0 rgba(255,184,0,.18);transition:box-shadow .3s,transform .3s;cursor:pointer}
+.ach-card:hover{box-shadow:0 0 70px rgba(255,184,0,.2),inset 0 1px 0 rgba(255,184,0,.3);transform:translateY(-2px)}
+.ach-card::before{content:'';position:absolute;top:-40px;right:-40px;width:320px;height:320px;background:radial-gradient(circle,rgba(255,184,0,.09),transparent 70%);pointer-events:none}
+.ach-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,184,0,.14);border:1px solid rgba(255,184,0,.4);border-radius:20px;padding:.28rem .88rem;font-family:var(--ff-m);font-size:.66rem;font-weight:600;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;margin-bottom:1rem}
+.ach-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:var(--gold);margin-bottom:.45rem}
+.ach-sub{font-family:var(--ff-m);font-size:.8rem;color:rgba(255,184,0,.68);margin-bottom:1.2rem;letter-spacing:.05em}
+.ach-desc{color:var(--text);opacity:.86;line-height:1.78;max-width:700px;margin-bottom:1.5rem}
+.ach-tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.tag-g{background:rgba(255,184,0,.11);border:1px solid rgba(255,184,0,.28);color:var(--gold);padding:.22rem .72rem;border-radius:4px;font-size:.7rem;font-family:var(--ff-m);font-weight:500;letter-spacing:.05em}
+.ach-num{position:absolute;top:2rem;right:2.5rem;text-align:right}
+.ach-num-val{font-family:var(--ff-m);font-size:3.5rem;font-weight:600;color:rgba(255,184,0,.22);line-height:1}
+.ach-num-lbl{font-family:var(--ff-m);font-size:.62rem;color:rgba(255,184,0,.32);letter-spacing:.18em;text-transform:uppercase}
+.ach-hint{margin-top:1rem;font-family:var(--ff-m);font-size:.68rem;color:rgba(255,184,0,.45)}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.2rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.65rem;cursor:pointer;transition:all .28s;position:relative;overflow:hidden}
+.card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.04),transparent);opacity:0;transition:opacity .25s}
+.card:hover{border-color:var(--border-h);box-shadow:var(--glow-h);transform:translateY(-3px)}
+.card:hover::after{opacity:1}
+.card.speaking{border-color:var(--cyan);box-shadow:0 0 28px rgba(0,229,255,.45);animation:pulse-c 1.6s ease-in-out infinite}
+@keyframes pulse-c{0%,100%{box-shadow:0 0 14px rgba(0,229,255,.28)}50%{box-shadow:0 0 38px rgba(0,229,255,.65)}}
+.c-type{font-family:var(--ff-m);font-size:.63rem;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.65rem;opacity:.78}
+.c-title{font-size:1.02rem;font-weight:700;margin-bottom:.55rem;line-height:1.3}
+.c-desc{font-size:.83rem;color:var(--muted);line-height:1.68;margin-bottom:1rem}
+.c-tags{display:flex;flex-wrap:wrap;gap:.38rem}
+.tag{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.17);color:rgba(0,229,255,.84);padding:.2rem .58rem;border-radius:4px;font-size:.67rem;font-family:var(--ff-m);font-weight:500}
+.c-voice{position:absolute;top:1.1rem;right:1.1rem;width:27px;height:27px;border-radius:50%;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.28);display:flex;align-items:center;justify-content:center;opacity:0;transition:all .2s}
+.card:hover .c-voice,.card.speaking .c-voice{opacity:1}
+.card.speaking .c-voice{background:rgba(0,229,255,.28);border-color:var(--cyan)}
+.c-link{font-family:var(--ff-m);font-size:.68rem;color:var(--cyan);margin-top:.75rem;display:inline-flex;align-items:center;gap:.35rem;opacity:.65;transition:opacity .2s}
+.card:hover .c-link{opacity:1}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.1rem}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;cursor:pointer;transition:all .26s}
+.sk-card:hover{border-color:var(--border-h);box-shadow:var(--glow-h);transform:translateY(-2px)}
+.sk-card.speaking{border-color:var(--cyan);box-shadow:0 0 28px rgba(0,229,255,.4);animation:pulse-sk 1.6s ease-in-out infinite}
+@keyframes pulse-sk{0%,100%{box-shadow:0 0 14px rgba(0,229,255,.25)}50%{box-shadow:0 0 36px rgba(0,229,255,.6)}}
+.sk-icon{font-size:1.3rem;margin-bottom:.75rem}
+.sk-cat{font-size:.92rem;font-weight:700;margin-bottom:.75rem;color:var(--cyan)}
+.sk-pills{display:flex;flex-wrap:wrap;gap:.38rem}
+.sk-pill{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.17);color:rgba(0,229,255,.84);padding:.2rem .62rem;border-radius:4px;font-size:.68rem;font-family:var(--ff-m);font-weight:500}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:0;top:.5rem;bottom:0;width:1px;background:linear-gradient(to bottom,var(--cyan) 0%,transparent 100%)}
+.tl-item{position:relative;margin-bottom:2.6rem}
+.tl-item::before{content:'';position:absolute;left:-2.38rem;top:.3rem;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.tl-date{font-family:var(--ff-m);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;margin-bottom:.28rem}
+.tl-role{font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
+.tl-org{font-size:.83rem;color:var(--muted);margin-bottom:.8rem;font-family:var(--ff-m)}
+.tl-pts{list-style:none;display:flex;flex-direction:column;gap:.48rem}
+.tl-pts li{font-size:.84rem;color:rgba(226,232,248,.74);line-height:1.63;padding-left:.95rem;position:relative}
+.tl-pts li::before{content:'›';position:absolute;left:0;color:var(--cyan)}
+
+/* ACADEMICS */
+.acad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem}
+.ac-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;cursor:pointer;transition:all .26s}
+.ac-card:hover{border-color:rgba(167,139,250,.38);box-shadow:0 0 22px rgba(167,139,250,.12);transform:translateY(-2px)}
+.ac-card.speaking{border-color:var(--purple);box-shadow:0 0 28px rgba(167,139,250,.32);animation:pulse-p 1.6s ease-in-out infinite}
+@keyframes pulse-p{0%,100%{box-shadow:0 0 14px rgba(167,139,250,.15)}50%{box-shadow:0 0 36px rgba(167,139,250,.45)}}
+.ac-course{font-size:.88rem;font-weight:700;margin-bottom:.5rem;color:var(--purple)}
+.ac-desc{font-size:.81rem;color:var(--muted);line-height:1.65}
+
+/* CERTS */
+.certs-wrap{display:flex;flex-wrap:wrap;gap:.78rem}
+.cert{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.68rem 1.15rem;display:flex;align-items:center;gap:.65rem;font-size:.82rem;transition:all .2s}
+.cert:hover{border-color:var(--border-h);box-shadow:var(--glow)}
+.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.c-info{display:flex;flex-direction:column;gap:.9rem}
+.c-item{display:flex;align-items:center;gap:.95rem;padding:.9rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;transition:all .2s}
+.c-item:hover{border-color:var(--border-h);box-shadow:var(--glow)}
+.c-ico{width:34px;height:34px;background:rgba(0,229,255,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.c-lbl{font-family:var(--ff-m);font-size:.66rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.c-val{font-size:.84rem;color:var(--text);margin-top:.1rem}
+.c-right{display:flex;flex-direction:column;gap:.9rem}
+.soc-btn{display:flex;align-items:center;gap:.78rem;padding:.9rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:.87rem;transition:all .25s;font-weight:600}
+.soc-btn:hover{border-color:var(--border-h);transform:translateX(4px);box-shadow:var(--glow)}
+
+/* VOICE WIDGET */
+#vw{position:fixed;bottom:2rem;right:2rem;z-index:600;display:flex;flex-direction:column;align-items:flex-end;gap:.75rem}
+.v-status{background:var(--bg2);border:1px solid var(--border-h);border-radius:12px;padding:.75rem 1.15rem;font-family:var(--ff-m);font-size:.76rem;color:var(--cyan);display:none;align-items:center;gap:.55rem;box-shadow:var(--glow);max-width:260px}
+.v-status.on{display:flex}
+.wv{display:flex;gap:2px;align-items:center;height:14px}
+.wb{width:3px;background:var(--cyan);border-radius:2px;animation:wv .8s ease-in-out infinite}
+.wb:nth-child(2){animation-delay:.15s}.wb:nth-child(3){animation-delay:.3s}.wb:nth-child(4){animation-delay:.45s}
+@keyframes wv{0%,100%{height:3px}50%{height:13px}}
+.v-ctrl{display:flex;gap:.45rem}
+.v-btn{height:42px;border-radius:21px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:1px solid var(--border-h);font-family:var(--ff-m);font-size:.7rem;font-weight:600;letter-spacing:.05em}
+.v-stop{width:42px;background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.4);color:var(--coral);display:none}
+.v-stop:hover{background:rgba(255,107,107,.28)}
+.v-ask{padding:0 1.1rem;background:rgba(0,229,255,.12);color:var(--cyan)}
+.v-ask:hover{background:rgba(0,229,255,.22);box-shadow:var(--glow)}
+
+/* ASK MODAL */
+#ask-modal{position:fixed;inset:0;z-index:700;background:rgba(6,11,24,.88);backdrop-filter:blur(12px);display:none;align-items:flex-end;justify-content:flex-end;padding:2rem}
+#ask-modal.open{display:flex}
+.ask-panel{background:var(--bg2);border:1px solid var(--border-h);border-radius:16px;width:400px;max-height:530px;display:flex;flex-direction:column;box-shadow:var(--glow-h);overflow:hidden}
+.ask-hdr{padding:1.15rem 1.35rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ask-hdr-t{font-size:.88rem;font-weight:700;color:var(--cyan)}
+.ask-hdr-s{font-family:var(--ff-m);font-size:.66rem;color:var(--muted);margin-top:.12rem}
+.ask-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;transition:color .2s}
+.ask-x:hover{color:var(--text)}
+.ask-msgs{flex:1;overflow-y:auto;padding:.95rem 1.15rem;display:flex;flex-direction:column;gap:.75rem}
+.msg{display:flex;flex-direction:column;gap:.28rem;max-width:85%}
+.msg-u{align-self:flex-end;align-items:flex-end}
+.msg-a{align-self:flex-start}
+.bubble{padding:.62rem .88rem;border-radius:10px;font-size:.81rem;line-height:1.62}
+.msg-u .bubble{background:rgba(0,229,255,.14);border:1px solid rgba(0,229,255,.3);color:var(--text)}
+.msg-a .bubble{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text)}
+.msg-meta{font-family:var(--ff-m);font-size:.6rem;color:var(--muted)}
+.ask-inp-area{padding:.95rem 1.15rem;border-top:1px solid var(--border);display:flex;gap:.55rem}
+.ask-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.58rem .88rem;font-family:var(--ff-d);font-size:.82rem;color:var(--text);outline:none;transition:border-color .2s}
+.ask-inp:focus{border-color:var(--border-h)}
+.ask-snd{padding:.58rem 1rem;background:var(--cyan);border:none;border-radius:8px;color:#060b18;font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap;transition:box-shadow .2s}
+.ask-snd:hover{box-shadow:0 0 16px rgba(0,229,255,.45)}
+.ask-snd:disabled{opacity:.45;cursor:not-allowed}
+
+/* FOOTER */
+footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);font-family:var(--ff-m);font-size:.7rem;color:var(--muted);letter-spacing:.05em;position:relative;z-index:1}
+footer span{color:var(--cyan)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:.75rem 1rem}.nav-links{display:none}
+  .contact-grid{grid-template-columns:1fr}
+  .ask-panel{width:calc(100vw - 1.5rem)}
+  #vw{bottom:1rem;right:1rem}
+  h1{font-size:2.4rem}
+}
+/* REVEAL ANIMATION */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="cur-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MKT_<span style="opacity:.4">PORTFOLIO</span></div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#academics">Academics</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openAsk()">💬 Ask Me</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">Available for Opportunities</div>
+  <h1><span class="n1">Muhammad Kamran</span><span class="n2">Tufail</span></h1>
+  <div class="hero-role">AI Automation Engineer · AI Agent Builder · Workflow Architect</div>
+  <p class="hero-desc">Building intelligent systems at the intersection of LLMs, automation &amp; software engineering. Turning manual workflows into autonomous AI-powered pipelines.</p>
+  <div class="hero-ctas">
+    <button class="btn-p btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
+    <button class="btn-p btn-sec" onclick="openAsk()">Ask Me Anything</button>
+    <a href="mailto:muhammadkamrantufailofficial@gmail.com" class="btn-p btn-sec">✉ Hire Me</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-n">13+</div><div class="stat-l">AI Projects</div></div>
+    <div><div class="stat-n">9+</div><div class="stat-l">AI Agents Built</div></div>
+    <div><div class="stat-n">25%</div><div class="stat-l">Efficiency Gains</div></div>
+    <div><div class="stat-n">2</div><div class="stat-l">SaaS Platforms</div></div>
+  </div>
+</section>
+
+<!-- AI RISE ACHIEVEMENT -->
+<div id="achievement">
+  <div class="ach-card reveal" onclick="speakAch()">
+    <div class="ach-num"><div class="ach-num-val">2025</div><div class="ach-num-lbl">Live Event</div></div>
+    <div class="ach-badge">⭐ Featured Achievement</div>
+    <div class="ach-title">AI Rise Expo 2025</div>
+    <div class="ach-sub">World UAV Federation (WUAVF) · Islamabad, Pakistan</div>
+    <p class="ach-desc">Served as Technical Team Member &amp; IT Coordinator at AI Rise Expo 2025 — a major AI exposition in Islamabad. Built and deployed multiple production AI agents used live during the event. Launched an agent coordination system that replaced traditional manual methods, yielding a <strong style="color:var(--gold)">25% increase in task completion rates</strong>, enabling the organising team to handle larger events without increasing headcount.</p>
+    <div class="ach-tags">
+      <span class="tag-g">Technical Team Member</span>
+      <span class="tag-g">AI Agent Deployment</span>
+      <span class="tag-g">Live Event Operations</span>
+      <span class="tag-g">n8n Automation</span>
+      <span class="tag-g">OpenAI API</span>
+      <span class="tag-g">25% Efficiency Gain</span>
+    </div>
+    <div class="ach-hint">🔊 Click to hear the voice agent narrate this achievement</div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-tag">Portfolio</div>
+  <h2>AI Projects</h2>
+  <p class="sec-sub">Click any project card — the AI voice agent will explain the problem, solution, and tech stack.</p>
+  <div class="cards-grid" id="proj-grid"></div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-tag">Expertise</div>
+  <h2>Technical Skills</h2>
+  <p class="sec-sub">Click any category to hear a spoken explanation of how I apply these skills.</p>
+  <div class="skills-grid" id="skills-grid"></div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-tag">Career</div>
+  <h2>Experience</h2>
+  <p class="sec-sub">Production-grade AI systems delivered in real-world environments.</p>
+  <div class="tl" id="exp-tl"></div>
+</section>
+
+<!-- ACADEMICS -->
+<section id="academics">
+  <div class="sec-tag">Education</div>
+  <h2>Academic Background</h2>
+  <p class="sec-sub">BSc Computer Science · Institute of Space Technology, Islamabad · 2023–2027</p>
+  <div class="acad-grid" id="acad-grid"></div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="sec-tag">Credentials</div>
+  <h2>Certifications</h2>
+  <p class="sec-sub" style="margin-bottom:1.5rem">Verified learning across AI, automation, and cloud platforms.</p>
+  <div class="certs-wrap">
+    <div class="cert reveal"><div class="cert-dot"></div>National AI Training Bootcamp — Pakistan Software Export Board (PSEB)</div>
+    <div class="cert reveal"><div class="cert-dot"></div>Google AI Essentials — Coursera</div>
+    <div class="cert reveal"><div class="cert-dot"></div>Use AI as a Creative or Expert Partner — Coursera</div>
+    <div class="cert reveal"><div class="cert-dot"></div>IT Coordination &amp; Technical Support — AI Rise Expo 2025</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-tag">Get In Touch</div>
+  <h2>Contact</h2>
+  <p class="sec-sub">Open to freelance projects, collaborations, and full-time AI engineering roles.</p>
+  <div class="contact-grid">
+    <div class="c-info">
+      <div class="c-item reveal"><div class="c-ico">📧</div><div><div class="c-lbl">Email</div><div class="c-val">muhammadkamrantufailofficial@gmail.com</div></div></div>
+      <div class="c-item reveal"><div class="c-ico">📱</div><div><div class="c-lbl">Phone</div><div class="c-val">+92 322-9377233</div></div></div>
+      <div class="c-item reveal"><div class="c-ico">📍</div><div><div class="c-lbl">Location</div><div class="c-val">Islamabad, Pakistan · Remote Available</div></div></div>
+      <div class="c-item reveal"><div class="c-ico">🎓</div><div><div class="c-lbl">Institution</div><div class="c-val">Institute of Space Technology · Class of 2027</div></div></div>
+    </div>
+    <div class="c-right">
+      <a href="https://linkedin.com/in/muhammad-kamran-tufail" target="_blank" class="soc-btn reveal"><span style="font-size:1.15rem">💼</span><div><div>LinkedIn Profile</div><div style="font-family:var(--ff-m);font-size:.68rem;color:var(--muted);margin-top:.1rem">muhammad-kamran-tufail</div></div><span style="margin-left:auto;color:var(--muted)">↗</span></a>
+      <a href="https://github.com/mkamrandeveloper" target="_blank" class="soc-btn reveal"><span style="font-size:1.15rem">⚡</span><div><div>GitHub</div><div style="font-family:var(--ff-m);font-size:.68rem;color:var(--muted);margin-top:.1rem">mkamrandeveloper</div></div><span style="margin-left:auto;color:var(--muted)">↗</span></a>
+      <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.15rem">
+        <div style="font-family:var(--ff-m);font-size:.66rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Community Role</div>
+        <div style="font-size:.85rem;font-weight:600;margin-bottom:.18rem">Co-Lead, Team Agentic AI</div>
+        <div style="font-family:var(--ff-m);font-size:.72rem;color:var(--cyan)">Google Developer Group Campus-IST</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Built by <span>Muhammad Kamran Tufail</span> · AI Engineer · Islamabad 2025 &nbsp;·&nbsp; <span style="opacity:.4">Ctrl+Shift+A</span></footer>
+
+<!-- VOICE WIDGET -->
+<div id="vw">
+  <div class="v-status" id="v-status"><div class="wv"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div><span id="v-txt">Speaking…</span></div>
+  <div class="v-ctrl">
+    <button class="v-btn v-stop" id="v-stop" onclick="stopSpeech()">■ Stop</button>
+    <button class="v-btn v-ask" onclick="openAsk()">💬 Ask Me</button>
+  </div>
+</div>
+
+<!-- ASK MODAL -->
+<div id="ask-modal" onclick="bgClose(event)">
+  <div class="ask-panel">
+    <div class="ask-hdr">
+      <div><div class="ask-hdr-t">Ask Kamran's AI</div><div class="ask-hdr-s">Powered by Claude · Ask anything about Kamran</div></div>
+      <button class="ask-x" onclick="closeAsk()">✕</button>
+    </div>
+    <div class="ask-msgs" id="ask-msgs">
+      <div class="msg msg-a"><div class="bubble">Hi! I'm Kamran's AI assistant 👋 Ask me about his projects, skills, experience, or how he can help your team.</div></div>
+    </div>
+    <div class="ask-inp-area">
+      <input class="ask-inp" id="ask-inp" placeholder="Ask about his work…" onkeydown="if(event.key==='Enter'&&!event.shiftKey)sendAsk()"/>
+      <button class="ask-snd" id="ask-snd" onclick="sendAsk()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const PROJECTS = [
+  {id:1,type:"Full-Stack AI SaaS",title:"Friend Group Bill Manager",desc:"Multi-tenant expense management platform with conversational AI agent (parses natural language), Tesseract.js OCR receipt scanner, and greedy debt-settlement algorithm.",tags:["Next.js 16","React 19","PostgreSQL","Prisma","Tesseract.js OCR","NLP Agent","WhatsApp API"],url:"https://github.com/mkamrandeveloper"},
+  {id:2,type:"AI Document Processing",title:"Gemini Invoice Automation Agent",desc:"End-to-end invoice pipeline monitoring Gmail, extracting PDF text, using Gemini 1.5 Flash to parse financial data, and auto-populating 4 Google Sheets.",tags:["n8n","Gemini 1.5 Flash","Gmail API","Google Sheets","pdf-parse"],url:""},
+  {id:3,type:"Conversational AI Bot",title:"Slack AI News & Management Agent",desc:"Slack bot responding to @mentions, fetching live AI news via Serper API, managing channels, with 10-message conversational memory. Powered by Llama 4 Maverick.",tags:["n8n","Llama 4 Maverick","Groq","Slack API","Serper API","LangChain"],url:""},
+  {id:4,type:"Conversational AI Bot",title:"Telegram AI News Agent",desc:"Intent-based Telegram bot for AI news retrieval, topic explanations, and deep dives. Dynamically adapts response format with real-time web search.",tags:["n8n","Telegram Bot API","Llama 4 Maverick","Groq","Serper API"],url:""},
+  {id:5,type:"Chat-Based Tool",title:"AI Inventory Manager (K2)",desc:"K2 — natural-language inventory manager. Commands like 'Sell 20 apples' trigger real-time Google Sheets updates via tool-calling architecture.",tags:["n8n","Llama 4 Maverick","Google Sheets","Buffer Memory","Chat Widget"],url:""},
+  {id:6,type:"Automated Data Pipeline",title:"Lead Enrichment Pipeline",desc:"Webhook-triggered pipeline enriching company and person data via PeopleDataLabs API, with Python batch scripts and AI-powered data cleaning.",tags:["n8n","PeopleDataLabs","Python","Google Sheets","OpenAI GPT-4o-mini","Webhooks"],url:""},
+  {id:7,type:"AI Architecture Templates",title:"Multi-Agent Architecture Templates",desc:"4 production-ready agent patterns: Single+Human Loop, Agents Hierarchy+Parallel, Sequential+MCP Servers, and Complex+Shared RAG. Reference implementations.",tags:["n8n","OpenAI GPT-4o-mini","Gmail","Google Sheets","Jira MCP","Multi-Agent"],url:""},
+  {id:8,type:"Workflow Automation SaaS",title:"Business & Marketing AI-Flow",desc:"Full-stack AI workflow platform with visual builder, BullMQ job queue, webhook HMAC verification, AI lead classification, and execution audit logs.",tags:["Next.js 14","BullMQ","Redis","PostgreSQL","Prisma","OpenAI","GitHub Actions"],url:"https://github.com/mkamrandeveloper/business-and-marketing-ai-flow"},
+  {id:9,type:"Marketing SaaS Platform",title:"PulseAI Marketing Suite",desc:"Decoupled AI marketing SaaS. Next.js frontend + Express backend. Content scheduler, email campaigns, AI blog drafting, analytics dashboard. 99% TypeScript.",tags:["Next.js 14","Express.js","TypeScript","PostgreSQL","OpenAI GPT-4o-mini","Docker","Railway"],url:"https://github.com/mkamrandeveloper/pulseai-marketing-suite"},
+  {id:10,type:"ML / Computer Vision",title:"Face Recognition Attendance System",desc:"Automated attendance using Python face_recognition library, MySQL database, frontend dashboard, integrated chatbot, and workflow automation.",tags:["Python","face_recognition","MySQL","Computer Vision","cv2","Chatbot"],url:""},
+  {id:11,type:"Live Event AI Deployment",title:"AI Agents Suite — AI Rise Expo 2025",desc:"Multiple production AI agents deployed live at AI Rise 2025 (WUAVF, Islamabad) for scheduling, coordination, and operations. Achieved 25% task completion increase.",tags:["n8n","OpenAI API","REST APIs","Webhooks","Live Deployment"],url:""},
+  {id:12,type:"Deep Learning / Medical AI",title:"Skin Lesion Classification Model",desc:"CNN deep learning model for medical skin lesion classification. Applies transfer learning and augmentation for diagnostic support.",tags:["Python","PyTorch","CNN","Deep Learning","Medical Imaging","Scikit-learn"],url:""},
+  {id:13,type:"Systems Programming",title:"Student Grade Management System",desc:"Grade management system in EMU-8086 Assembly, demonstrating low-level register operations, memory addressing, and system-level programming mastery.",tags:["EMU-8086","Assembly Language","Systems Programming"],url:""},
+];
+
+const SKILLS = [
+  {id:1,icon:"🤖",cat:"AI & Agents",items:["OpenAI API","LangChain","LLM Chaining","Prompt Engineering","Context Engineering","RAG Pipelines","Agent Architectures"]},
+  {id:2,icon:"⚡",cat:"Automation",items:["n8n","Make (Integromat)","Zapier","Webhook Orchestration","Multi-step Pipelines"]},
+  {id:3,icon:"🐍",cat:"Programming",items:["Python","JavaScript","TypeScript","C++","C#","REST APIs","JSON"]},
+  {id:4,icon:"🧠",cat:"ML / Data Science",items:["Scikit-learn","PyTorch","Computer Vision (cv2)","Pandas","NumPy","CNNs","Transfer Learning"]},
+  {id:5,icon:"🚀",cat:"Full-Stack",items:["Next.js","React","Express.js","FastAPI","Tailwind CSS","Prisma ORM"]},
+  {id:6,icon:"🗄️",cat:"Databases",items:["PostgreSQL","MongoDB","Google Sheets API","Redis","BullMQ"]},
+  {id:7,icon:"🎨",cat:"AI Specialties",items:["AI Image Generation","AI Video Models","Structured Output","Tool Calling","Memory Systems","Human-in-the-Loop"]},
+  {id:8,icon:"☁️",cat:"Deployment",items:["Vercel","Railway","Docker","GitHub Actions","FastAPI","Supabase"]},
+];
+
+const EXPERIENCE = [
+  {date:"Dec 2024 – Jan 2025",role:"AI Automation Assistant",org:"Hansan J. Technologies",pts:["Designed and deployed production-grade AI agents using n8n: meeting scheduler, invoice processor, job scraper","Implemented multi-step automation pipelines integrating REST APIs, webhooks, and LLMs — significantly reducing manual task execution","Mapped business processes, identified automation bottlenecks, delivered measurable KPI-driven n8n solutions"]},
+  {date:"2025–2026",role:"Technical Team Member & IT Coordinator",org:"AI Rise Expo 2025 (WUAVF, Islamabad)",pts:["Built and deployed multiple AI agents and applications used live during the event","Agent coordination system replaced manual methods — 25% increase in task completion rates","Enabled the organising team to manage larger event logistics without increasing headcount"]},
+  {date:"2024–Present",role:"Co-Lead, Team Agentic AI",org:"Google Developer Group Campus-IST",pts:["Co-leading the Agentic AI team, organising workshops and AI hackathons for students","Mentoring peers in LLM-based system design, agent architectures, and automation workflows"]},
+];
+
+const ACADEMICS = [
+  {id:1,course:"Machine Learning & Artificial Intelligence",desc:"Supervised/unsupervised learning, neural networks, intelligent system design. Applied to real-world classification, regression, and prediction tasks."},
+  {id:2,course:"Advanced Database Management",desc:"Database design, security, RBAC, encryption, performance tuning. Applied MySQL with stored procedures, triggers, and user privilege systems."},
+  {id:3,course:"Numerical Analysis",desc:"Bisection method, Newton-Raphson, interpolation, numerical integration. Applied to engineering problems requiring iterative computational solutions."},
+  {id:4,course:"Parallel & Distributed Computing",desc:"MPI programming, process communication, parallel algorithm design. Implemented parallel matrix multiplication and distributed data processing."},
+  {id:5,course:"Object-Oriented Programming",desc:"Design patterns, encapsulation, inheritance, polymorphism in C++ and C#. SOLID principles and reusable component systems."},
+  {id:6,course:"Data Structures & Algorithms",desc:"Arrays, linked lists, trees, graphs, sorting, searching algorithms. Foundation for efficient AI pipeline design and system architecture."},
+  {id:7,course:"Physics — Magnetic Field Lab",desc:"Experimental physics: magnetic field mapping, Hall effect sensors, electromagnetic induction with data collection and analysis."},
+  {id:8,course:"Computer Architecture",desc:"CPU design, memory hierarchy, instruction sets. Low-level systems programming including EMU-8086 Assembly."},
+];
+
+// ═══════════════ RENDER ═══════════════
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function renderProjects(){
+  document.getElementById('proj-grid').innerHTML=PROJECTS.map(p=>`
+    <div class="card reveal" id="p${p.id}" onclick="speakProj(${p.id})">
+      <div class="c-voice">🔊</div>
+      <div class="c-type">${esc(p.type)}</div>
+      <div class="c-title">${esc(p.title)}</div>
+      <div class="c-desc">${esc(p.desc)}</div>
+      <div class="c-tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      ${p.url?`<div class="c-link">GitHub ↗</div>`:''}
+    </div>`).join('');
+}
+
+function renderSkills(){
+  document.getElementById('skills-grid').innerHTML=SKILLS.map(s=>`
+    <div class="sk-card reveal" id="sk${s.id}" onclick="speakSkill(${s.id})">
+      <div class="sk-icon">${s.icon}</div>
+      <div class="sk-cat">${esc(s.cat)}</div>
+      <div class="sk-pills">${s.items.map(i=>`<span class="sk-pill">${esc(i)}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function renderExp(){
+  document.getElementById('exp-tl').innerHTML=EXPERIENCE.map(e=>`
+    <div class="tl-item reveal">
+      <div class="tl-date">${esc(e.date)}</div>
+      <div class="tl-role">${esc(e.role)}</div>
+      <div class="tl-org">${esc(e.org)}</div>
+      <ul class="tl-pts">${e.pts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+
+function renderAcad(){
+  document.getElementById('acad-grid').innerHTML=ACADEMICS.map(a=>`
+    <div class="ac-card reveal" id="ac${a.id}" onclick="speakAcad(${a.id})">
+      <div class="ac-course">${esc(a.course)}</div>
+      <div class="ac-desc">${esc(a.desc)}</div>
+    </div>`).join('');
+}
+
+// ═══════════════ VOICE ═══════════════
+function stopSpeech(){
+  if(speechSynthesis.speaking)speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(e=>e.classList.remove('speaking'));
+  document.getElementById('v-status').classList.remove('on');
+  document.getElementById('v-stop').style.display='none';
+}
+
+function speak(text,elId){
+  if(!('speechSynthesis' in window))return;
+  stopSpeech();
+  const el=elId&&document.getElementById(elId);
+  if(el)el.classList.add('speaking');
+  document.getElementById('v-status').classList.add('on');
+  document.getElementById('v-stop').style.display='flex';
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=0.91;u.pitch=1.0;u.volume=1;
+  const vv=speechSynthesis.getVoices();
+  const pref=vv.find(v=>v.name.includes('Google UK English Male')||v.name.includes('Daniel')||v.name.includes('Alex')||v.lang==='en-GB')||vv.find(v=>v.lang.startsWith('en'));
+  if(pref)u.voice=pref;
+  const done=()=>{if(el)el.classList.remove('speaking');document.getElementById('v-status').classList.remove('on');document.getElementById('v-stop').style.display='none';};
+  u.onend=done;u.onerror=done;
+  speechSynthesis.speak(u);
+}
+
+function speakProj(id){
+  const p=PROJECTS.find(x=>x.id===id);if(!p)return;
+  speak(`Let me tell you about ${p.title}. This is a ${p.type}. ${p.desc} The core technologies include: ${p.tags.slice(0,5).join(', ')}.${p.url?' You can find this on GitHub.':''}`,`p${id}`);
+}
+function speakSkill(id){
+  const s=SKILLS.find(x=>x.id===id);if(!s)return;
+  speak(`${s.cat} is a key strength of mine. I work extensively with ${s.items.join(', ')}. These skills power my AI agents, automation pipelines, and production applications.`,`sk${id}`);
+}
+function speakAcad(id){
+  const a=ACADEMICS.find(x=>x.id===id);if(!a)return;
+  speak(`As part of my Computer Science degree at the Institute of Space Technology, I've studied ${a.course}. ${a.desc}`,`ac${id}`);
+}
+function speakAch(){
+  speak("I'm especially proud of my work at AI Rise Expo 2025, organized by the World UAV Federation in Islamabad. As Technical Team Member and IT Coordinator, I built and deployed production AI agents that ran live during the event. My standout contribution was an agent coordination system that replaced manual workflows, achieving a 25% increase in task completion rates — allowing the team to handle larger-scale logistics without expanding headcount. A real-world proof of AI automation impact.");
+}
+
+// ═══════════════ ASK ME (API PROXY) ═══════════════
+const chatHistory=[];
+function openAsk(){document.getElementById('ask-modal').classList.add('open');setTimeout(()=>document.getElementById('ask-inp').focus(),120)}
+function closeAsk(){document.getElementById('ask-modal').classList.remove('open')}
+function bgClose(e){if(e.target.id==='ask-modal')closeAsk()}
+
+function addMsg(role,text){
+  const div=document.createElement('div');
+  div.className=`msg msg-${role==='user'?'u':'a'}`;
+  div.innerHTML=`<div class="bubble">${esc(text)}</div><div class="msg-meta">${role==='user'?'You':'Kamran AI'} · now</div>`;
+  const msgs=document.getElementById('ask-msgs');
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addTyping(){
+  const div=document.createElement('div');div.id='typing';div.className='msg msg-a';
+  div.innerHTML=`<div class="bubble" style="color:var(--muted)">Thinking<span id="dots">.</span></div>`;
+  document.getElementById('ask-msgs').appendChild(div);
+  let d=0;return setInterval(()=>{d=(d+1)%4;const el=document.getElementById('dots');if(el)el.textContent='.'.repeat(d+1);},400);
+}
+
+async function sendAsk(){
+  const inp=document.getElementById('ask-inp');
+  const q=inp.value.trim();if(!q)return;
+  addMsg('user',q);inp.value='';
+  document.getElementById('ask-snd').disabled=true;
+  const ti=addTyping();
+  chatHistory.push({role:'user',content:q});
+  try{
+    const r=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:chatHistory.slice(-6)})});
+    clearInterval(ti);document.getElementById('typing')?.remove();
+    if(!r.ok){const e=await r.json();addMsg('ai',`Error: ${e.error||'Something went wrong'}`);document.getElementById('ask-snd').disabled=false;return;}
+    const data=await r.json();
+    addMsg('ai',data.response);
+    chatHistory.push({role:'assistant',content:data.response});
+    setTimeout(()=>speak(data.response,''),150);
+  }catch(e){
+    clearInterval(ti);document.getElementById('typing')?.remove();
+    addMsg('ai','Could not connect. Please check your internet connection.');
+  }
+  document.getElementById('ask-snd').disabled=false;
+}
+
+// ═══════════════ CURSOR ═══════════════
+const cur=document.getElementById('cur'),cr=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animC(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(animC)})();
+document.addEventListener('mousedown',()=>cur.style.transform='translate(-50%,-50%) scale(1.8)');
+document.addEventListener('mouseup',()=>cur.style.transform='translate(-50%,-50%) scale(1)');
+
+// ═══════════════ SCROLL REVEAL ═══════════════
+function setupReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*45);obs.unobserve(e.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+// ═══════════════ INIT ═══════════════
+function init(){
+  renderProjects();renderSkills();renderExp();renderAcad();
+  setupReveal();
+  if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=()=>{};
+  // Secret admin shortcut
+  document.addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.shiftKey&&e.key==='A'){e.preventDefault();window.location.href='/admin.html';}
+    if(e.key==='Escape'){closeAsk();}
+  });
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
