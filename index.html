@@ -41,6 +41,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1rem 2rem;display:fl
 
 /* HERO */
 #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 4rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;gap:3rem}
+.hero-text{flex:1;min-width:0}
+.hero-avatar{flex-shrink:0;width:280px;height:280px;border-radius:50%;border:3px solid rgba(0,229,255,.35);box-shadow:0 0 40px rgba(0,229,255,.15),0 0 80px rgba(0,229,255,.06);overflow:hidden;position:relative;background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(167,139,250,.12));display:flex;align-items:center;justify-content:center;animation:avatar-glow 4s ease-in-out infinite}
+.hero-avatar img{width:100%;height:100%;object-fit:cover}
+.hero-avatar .avatar-initials{font-family:var(--ff-d);font-size:4.5rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;user-select:none}
+@keyframes avatar-glow{0%,100%{box-shadow:0 0 40px rgba(0,229,255,.15),0 0 80px rgba(0,229,255,.06)}50%{box-shadow:0 0 55px rgba(0,229,255,.25),0 0 100px rgba(0,229,255,.1)}}
+@media(max-width:768px){.hero-inner{flex-direction:column-reverse;text-align:center;gap:2rem}.hero-avatar{width:180px;height:180px}.hero-ctas{justify-content:center}.hero-stats{justify-content:center}.hero-badge{justify-content:center}}
 .hero-badge{font-family:var(--ff-m);font-size:.7rem;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
 .hero-badge::before{content:'';display:inline-block;width:22px;height:1px;background:var(--cyan)}
 h1{font-size:clamp(2.8rem,7vw,5.6rem);font-weight:800;line-height:1.05;letter-spacing:-.025em}
@@ -228,20 +235,25 @@ footer span{color:var(--cyan)}
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-badge">Available for Opportunities</div>
-  <h1><span class="n1">Muhammad Kamran</span><span class="n2">Tufail</span></h1>
-  <div class="hero-role">AI Automation Engineer · AI Agent Builder · Workflow Architect</div>
-  <p class="hero-desc">Building intelligent systems at the intersection of LLMs, automation &amp; software engineering. Turning manual workflows into autonomous AI-powered pipelines.</p>
-  <div class="hero-ctas">
-    <button class="btn-p btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
-    <button class="btn-p btn-sec" onclick="openAsk()">Ask Me Anything</button>
-    <a href="mailto:muhammadkamrantufailofficial@gmail.com" class="btn-p btn-sec">✉ Hire Me</a>
-  </div>
-  <div class="hero-stats">
-    <div><div class="stat-n">13+</div><div class="stat-l">AI Projects</div></div>
-    <div><div class="stat-n">9+</div><div class="stat-l">AI Agents Built</div></div>
-    <div><div class="stat-n">25%</div><div class="stat-l">Efficiency Gains</div></div>
-    <div><div class="stat-n">2</div><div class="stat-l">SaaS Platforms</div></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Available for Opportunities</div>
+      <h1><span class="n1">Muhammad Kamran</span><span class="n2">Tufail</span></h1>
+      <div class="hero-role">AI Automation Engineer · AI Agent Builder · Workflow Architect</div>
+      <p class="hero-desc">Building intelligent systems at the intersection of LLMs, automation &amp; software engineering. Turning manual workflows into autonomous AI-powered pipelines.</p>
+      <div class="hero-ctas">
+        <button class="btn-p btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
+        <button class="btn-p btn-sec" onclick="openAsk()">Ask Me Anything</button>
+        <a href="mailto:muhammadkamrantufailofficial@gmail.com" class="btn-p btn-sec">✉ Hire Me</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-n">13+</div><div class="stat-l">AI Projects</div></div>
+        <div><div class="stat-n">9+</div><div class="stat-l">AI Agents Built</div></div>
+        <div><div class="stat-n">25%</div><div class="stat-l">Efficiency Gains</div></div>
+        <div><div class="stat-n">2</div><div class="stat-l">SaaS Platforms</div></div>
+      </div>
+    </div>
+    <div class="hero-avatar" id="hero-avatar"><span class="avatar-initials">MKT</span></div>
   </div>
 </section>
 
@@ -551,8 +563,14 @@ function setupReveal(){
 }
 
 // ═══════════════ INIT ═══════════════
+function loadAvatar(){
+  const data=localStorage.getItem('kmt_avatar');
+  const el=document.getElementById('hero-avatar');
+  if(data&&el){el.innerHTML=`<img src="${data}" alt="Muhammad Kamran Tufail"/>`;}}
+
 function init(){
   renderProjects();renderSkills();renderExp();renderAcad();
+  loadAvatar();
   setupReveal();
   if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=()=>{};
   // Secret admin shortcut

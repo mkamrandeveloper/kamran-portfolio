@@ -69,6 +69,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 /* SETTINGS */
 .settings-note{font-family:var(--ff-m);font-size:.72rem;color:rgba(255,184,0,.55);margin-top:.35rem;line-height:1.6}
 .hash-display{font-family:var(--ff-m);font-size:.7rem;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.6rem .9rem;color:var(--lime);margin-top:.5rem;word-break:break-all;display:none}
+/* AVATAR UPLOAD */
+.avatar-preview{width:160px;height:160px;border-radius:50%;border:3px solid rgba(0,229,255,.35);overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(0,229,255,.1),rgba(167,139,250,.1));margin-bottom:1rem}
+.avatar-preview img{width:100%;height:100%;object-fit:cover}
+.avatar-preview .av-placeholder{font-family:var(--ff-d);font-size:3rem;font-weight:800;color:var(--muted);user-select:none}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem}
+.upload-zone:hover{border-color:var(--gold);background:rgba(255,184,0,.04)}
+.upload-zone input{display:none}
 @media(max-width:600px){.form-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -96,6 +103,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="nav-tab active" onclick="switchTab('projects')">Projects</button>
       <button class="nav-tab" onclick="switchTab('skills')">Skills</button>
       <button class="nav-tab" onclick="switchTab('experience')">Experience</button>
+      <button class="nav-tab" onclick="switchTab('profile')">Profile</button>
       <button class="nav-tab" onclick="switchTab('export')">Export</button>
       <button class="nav-tab" onclick="switchTab('settings')">Settings</button>
     </div>
@@ -148,6 +156,31 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div style="display:flex;align-items:center;gap:.5rem"><button class="btn-add" onclick="addExp()">+ Add Experience</button><span class="success" id="e-ok">✓ Added!</span></div>
     </div>
     <div class="item-list" id="e-list"></div>
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div class="admin-section" id="tab-profile">
+    <div class="section-title">Profile Picture</div>
+    <div class="section-sub">Upload your profile picture. It will appear in the hero section of your portfolio.</div>
+    <div class="admin-form">
+      <div style="display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap">
+        <div>
+          <div class="avatar-preview" id="av-preview"><span class="av-placeholder">MKT</span></div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div class="upload-zone" id="upload-zone" onclick="document.getElementById('av-input').click()">
+            <input type="file" id="av-input" accept="image/*" onchange="handleAvatarUpload(event)"/>
+            <div style="font-size:.85rem;font-weight:600;color:var(--gold);margin-bottom:.3rem">📷 Click to upload photo</div>
+            <div style="font-family:var(--ff-m);font-size:.68rem;color:var(--muted)">JPG, PNG, or WebP · Max 500KB recommended</div>
+          </div>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+            <button class="btn-add" onclick="document.getElementById('av-input').click()">Upload New Photo</button>
+            <button class="btn-del" onclick="removeAvatar()">Remove Photo</button>
+          </div>
+          <span class="success" id="av-ok">✓ Photo saved!</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- EXPORT TAB -->
@@ -233,8 +266,9 @@ async function tryLogin(){
 
 // ═══════════════ TAB NAV ═══════════════
 function switchTab(name){
-  document.querySelectorAll('.nav-tab').forEach((t,i)=>{const tabs=['projects','skills','experience','export','settings'];t.classList.toggle('active',tabs[i]===name)});
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{const tabs=['projects','skills','experience','profile','export','settings'];t.classList.toggle('active',tabs[i]===name)});
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.toggle('active',s.id==='tab-'+name));
+  if(name==='profile')loadAvatarPreview();
 }
 
 // ═══════════════ RENDER LISTS ═══════════════
@@ -324,9 +358,48 @@ async function changePassword(){
 }
 function clearAll(){
   if(!confirm('Clear ALL local data and reset to defaults?'))return;
-  ['kmt_p','kmt_s','kmt_e','kmt_hash'].forEach(k=>localStorage.removeItem(k));
+  ['kmt_p','kmt_s','kmt_e','kmt_hash','kmt_avatar'].forEach(k=>localStorage.removeItem(k));
   location.reload();
 }
+
+// ═══════════════ AVATAR ═══════════════
+function loadAvatarPreview(){
+  const data=localStorage.getItem('kmt_avatar');
+  const el=document.getElementById('av-preview');
+  if(data&&el){el.innerHTML=`<img src="${data}" alt="Profile"/>`;
+  }else if(el){el.innerHTML='<span class="av-placeholder">MKT</span>';}
+}
+
+function handleAvatarUpload(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  if(file.size>2*1024*1024){alert('Image too large. Please use an image under 2MB.');return;}
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const max=400;
+      let w=img.width,h=img.height;
+      if(w>max||h>max){const r=Math.min(max/w,max/h);w*=r;h*=r;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl=canvas.toDataURL('image/webp',0.85);
+      localStorage.setItem('kmt_avatar',dataUrl);
+      loadAvatarPreview();
+      flash('av-ok');
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeAvatar(){
+  if(!confirm('Remove profile picture?'))return;
+  localStorage.removeItem('kmt_avatar');
+  loadAvatarPreview();
+}
+
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none')tryLogin()});
 </script>
 </body>
