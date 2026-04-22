@@ -2334,52 +2334,40 @@
       const input = document.getElementById('ask-input');
       const q = input.value.trim();
       if (!q) return;
-      if (!API_KEY) { addMessage('ai', "Please add your Anthropic API key in Admin → API Settings to enable AI responses. You can still use the voice agent by clicking on any card!"); return; }
+
       addMessage('user', q);
       input.value = '';
       document.getElementById('ask-send').disabled = true;
       const dotInt = addTypingIndicator();
-      const systemPrompt = `You are the AI assistant on Muhammad Kamran Tufail's portfolio website. Answer questions about Kamran concisely and helpfully. Here's everything about him:
-
-NAME: Muhammad Kamran Tufail
-ROLE: AI Automation Engineer, AI Agent Builder, Workflow Architect
-LOCATION: Islamabad, Pakistan
-EMAIL: muhammadkamrantufailofficial@gmail.com
-LINKEDIN: linkedin.com/in/muhammad-kamran-tufail
-EDUCATION: Bachelor of Computer Science, Institute of Space Technology (2023-2027)
-
-EXPERIENCE:
-- AI Automation Assistant at Hansan J. Technologies (Dec 2024 - Jan 2025): Built n8n AI agents for meeting scheduling, invoice processing, job scraping
-- Technical Team Member, AI Rise Expo 2025 (WUAVF, Islamabad): Deployed live AI agents, 25% efficiency increase
-- Co-Lead Team Agentic AI, Google Developer Group Campus-IST
-
-KEY PROJECTS: Friend Group Bill Manager (Next.js, PostgreSQL, OCR, NLP), Gemini Invoice Agent (n8n, Gemini 1.5 Flash), Slack AI News Bot (n8n, Llama 4, Groq), Telegram AI Bot, AI Inventory Manager, Lead Enrichment Pipeline (PeopleDataLabs), Multi-Agent Architecture Templates, Business & Marketing AI-Flow (BullMQ, Redis), PulseAI Marketing Suite (Express, Docker), Face Recognition Attendance System, Skin Lesion Classification (CNN), Student Grade System (Assembly)
-
-SKILLS: OpenAI API, LangChain, n8n, Python, TypeScript, Next.js, PostgreSQL, Prisma, PyTorch, Docker, RAG, Prompt Engineering, Multi-Agent Systems
-
-Keep answers under 3 short paragraphs. Be enthusiastic about his work.`;
 
       try {
-        const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        const resp = await fetch('/api/ask', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, system: systemPrompt, messages: [{ role: 'user', content: q }] })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: q, history: [] })
         });
+        
         clearInterval(dotInt);
-        document.getElementById('typing-ind')?.remove();
-        if (!resp.ok) { const e = await resp.json(); addMessage('ai', `API Error: ${e.error?.message || 'Unknown error'}`); }
-        else {
+        const typingInd = document.getElementById('typing-ind');
+        if (typingInd) typingInd.remove();
+        
+        if (!resp.ok) { 
+          const e = await resp.json(); 
+          addMessage('ai', `Error: ${e.error || 'Server error'}`); 
+        } else {
           const data = await resp.json();
-          const ans = data.content[0].text;
+          const ans = data.response;
           addMessage('ai', ans);
           setTimeout(() => speak(ans, ''), 200);
         }
       } catch (err) {
         clearInterval(dotInt);
-        document.getElementById('typing-ind')?.remove();
-        addMessage('ai', 'Network error. Please check your API key and internet connection.');
+        const typingInd = document.getElementById('typing-ind');
+        if (typingInd) typingInd.remove();
+        addMessage('ai', 'Service unavailable. Please ensure your GROQ_API_KEY is set in Vercel.');
+      } finally {
+        document.getElementById('ask-send').disabled = false;
       }
-      document.getElementById('ask-send').disabled = false;
     }
 
     // ═══════════════════════════════════════════════
